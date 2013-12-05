@@ -1,4 +1,5 @@
-comp150
+COMP150FP
 =======
 
-Using context-free grammars in Haskell to parse jazz chord progressions
+Exploring functional parsing of jazz grammars.
+
