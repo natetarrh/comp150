@@ -45,7 +45,6 @@
                         <small>Nate Tarrh / COMP150FP / Tufts University / December 12, 2013</small>
                     </p>
                 </section>
-
                 <section>
                     <h2>What is this talk about?</h2>
                         <br>
@@ -64,19 +63,11 @@
                 </section>
                 <section>
                     <img src="img/giant-steps.jpg" alt="Giant Steps">
-                    <audio data-autoplay><source src="audio/giant-steps.mp3" type='audio/mpeg;codecs="mp3"'></audio>
-                </section>
-                <section>
-                    <h1>We need a framework</h1>
+                    <audio data-autoplay loop><source src="audio/giant-steps.mp3" type='audio/mpeg;codecs="mp3"'></audio>
                 </section>
                 <section>
                     <h1>The Grammar of Jazz</h1>
                 </section>
-<!--                 <section>
-                    <h2>A Guide to Harmony with Lego Bricks<br>Conrad Cork (1996)</h2>
-                    <br>
-                    <h2>Insights in Jazz<br>John Elliot (2009)</h2>
-                </section> -->
                 <section>
                     <h2>Key Assumption:</h2>
                         <p>
@@ -92,6 +83,7 @@
                     <img src="img/giant-steps-annotated.jpg" alt="Giant Steps">
                 </section>
                 <section>
+                    <h2>The lick</h2>
                     <iframe width="640" height="480" src="http://www.youtube.com/embed/krDxhnaKD7Q?rel=0" frameborder="0" allowfullscreen></iframe>
                 </section>
                 <section>
@@ -179,23 +171,35 @@ parse :: Grammar n t -> [t] -> [ParseTree n t]
                   writeArray parse (j,i,a) rule</code></pre>
                 </section>
                 <section>
-                    <h2>Let's do some math</h2><br>
-                    <h3>
-                    \[\mathbf{C}_{i,j} = \{ A \mid \langle i,j : A \rangle \}\]
-                    \[\mathbf{C}_{i-1,i} = \{ A \mid A \rightarrow t_i \}\]
-                    </h2>
+                    <section>
+                        <h2>Let's do some math</h2><br>
+                        <h3>
+                            \[\mathbf{C}_{i,j} = \{ A \mid \langle i,j : A \rangle \}\]
+                            \[\mathbf{C}_{i-1,i} = \{ A \mid A \rightarrow t_i \}\]
+                        </h2>
+                    </section>
+                    <section>
+                        <h2>CYK algorithm</h2>
+                        <img src="img/cyk.png" alt="CYK">
+                    </section>
                 </section>
                 <section>
-                    <h2>
-                    \[A \rightarrow BC\]
-                    </h2><br>
-                    <h3>
-                    \[\mathbf{BC} = \{ C \mid B \in \mathbf{B}, C \in \mathbf{C}, A \rightarrow BC \}\]
-                    \[\mathbf{C}_{ik} = \bigcup_{j=i+1}^{k-1} \mathbf{C}_{ij} \mathbf{C}_{jk}\]
-                    </h3>
-                    <h4>
-                    \[\mathbf{C}_{ik} = \langle\mathbf{C}_{i,i+1}, \mathbf{C}_{i,i+2}...\mathbf{C}_{i,k-1}\rangle \cdotp\langle\mathbf{C}_{i+1,k}, \mathbf{C}_{i+2,k}...\mathbf{C}_{k-1,k}\rangle\]
-                    </h4>
+                    <section>
+                        <h2>
+                            \[A \rightarrow BC\]
+                        </h2><br>
+                        <h3>
+                            \[\mathbf{BC} = \{ C \mid B \in \mathbf{B}, C \in \mathbf{C}, A \rightarrow BC \}\]
+                            \[\mathbf{C}_{ik} = \bigcup_{j=i+1}^{k-1} \mathbf{C}_{ij} \mathbf{C}_{jk}\]
+                        </h3>
+                        <h4>
+                            \[\mathbf{C}_{ik} = \langle\mathbf{C}_{i,i+1}, \mathbf{C}_{i,i+2}...\mathbf{C}_{i,k-1}\rangle \cdotp\langle\mathbf{C}_{i+1,k}, \mathbf{C}_{i+2,k}...\mathbf{C}_{k-1,k}\rangle\]
+                        </h4>
+                    </section>
+                    <section>
+                        <h2>CYK algorithm</h2>
+                        <img src="img/cyk.png" alt="CYK">
+                    </section>
                 </section>
                 <section>
                     <img src="img/better-cyk.png" alt="CYK">
