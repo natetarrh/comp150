@@ -18,7 +18,7 @@
         <link rel="stylesheet" href="css/theme/sky.css" id="theme">
 
         <!-- For syntax highlighting -->
-        <link rel="stylesheet" href="lib/css/foundation.css">
+        <link rel="stylesheet" href="lib/css/github.css">
 
         <!-- If the query includes 'print-pdf', use the PDF print sheet -->
         <script>
@@ -37,12 +37,10 @@
             <!-- Any section element inside of this container is displayed as a slide -->
             <div class="slides">
                 <section>
-                    <h1>Chomsky, Coltrane, and Currying</h1>
-                    <h2>Using Context-Free Grammars to Parse Jazz Chord Progressions</h2>
-                    <h3>How Haskell can Help</h3>
-                    <h4>An Experience Report</h4>
+                    <h2>Using Context-Free Grammars in Haskell to Parse Jazz Chord Progressions</h2>
                     <p>
-                        <small>Nate Tarrh / COMP150FP / Tufts University / December 12, 2013</small>
+                        Nate Tarrh / Tufts University / December 12,
+                        2013
                     </p>
                 </section>
                 <section>
@@ -87,19 +85,20 @@
                     <iframe width="640" height="480" src="http://www.youtube.com/embed/krDxhnaKD7Q?rel=0" frameborder="0" allowfullscreen></iframe>
                 </section>
                 <section>
-                    <h2>Having a higher-level framework is important</h2>
-                        <br>
+                    <h2>Having a higher-level framework is important</h2><br>
+                        <div style="text-align:left;margin-left:15%;">
                         <h3>For better improvising</h3>
                         <h3>For better listening</h3>
                         <h3>For better analysis</h3>
                         <h3>For better synthesis</h3>
+                        </div>
                 </section>
                 <section>
                     <h1>Context-Free Grammars and Parsing</h1>
                 </section>
                 <section>
-                    <h2>Simple English Grammar
-                    <pre style="background: #eee;text-transform: none">
+                    <h2>Simple English Grammar</h2>
+                    <pre style="background: #eee;font-size:1em;">
     S    &rarr; NP VP
     VP   &rarr; Verb | Verb NP  | VP PP
     NP   &rarr; Noun | Det Noun | NP PP
@@ -111,12 +110,11 @@
                     </h2>
                 </section>
                 <section>
-                    <h2>Simple Music Grammar
-                    <pre style="background: #eee;text-transform: none">
+                    <h2>Simple Music Grammar</h2>
+                    <pre style="background: #eee;font-size:1em;">
     C-cadence  &rarr; G-dominant C-tonic
     G-dominant &rarr; G7 | G7b9 | G13#11
     C-tonic    &rarr; C  | CM7  | C9</pre>
-                    </h2>
                 </section>
                 <section>
                     <h2>Chomsky Normal Form<br><br>
@@ -149,33 +147,14 @@ parse :: Grammar n t -> [t] -> [ParseTree n t]
                     <h2>CYK algorithm</h2>
                     <img src="img/cyk.png" alt="CYK">
                 </section>
-
-                <section>
-                    <h2>Yikes!</h2>             
-<pre><code>    grammar :: [Rule]
-    parse :: STUArray s (Int, Int, Int) Rule
-
-    forM_ (enumerate input) $ \(i, t) ->
-      forM_ (terminalRules grammar) $ \(j, rule) ->
-        when (terminalRuleProduces rule t) $
-          writeArray parse (i,1,j) rule
- 
-    forM_ [2..n] $ \i ->
-      forM_ [1..(n-i+1)] $ \j ->
-        forM_ [1..(i-1)] $ \k ->
-          forM_ (nonTerminalRules grammar) $ \(a, rule) ->
-            forM_ (lookup indexMap rule) $ \(b,c) -> do
-              p0 <- readArray parse (j,k,b)
-              p1 <- readArray parse (j+k,i-k,c)
-                when (p0 && p1) $
-                  writeArray parse (j,i,a) rule</code></pre>
-                </section>
                 <section>
                     <section>
                         <h2>Let's do some math</h2><br>
                         <h3>
                             \[\mathbf{C}_{i,j} = \{ A \mid \langle i,j : A \rangle \}\]
-                            \[\mathbf{C}_{i-1,i} = \{ A \mid A \rightarrow t_i \}\]
+                            <br>
+                            \[A \rightarrow t\]
+                            \[\mathbf{C}_{i,i} = \{ A \mid A \rightarrow t_i \}\]
                         </h2>
                     </section>
                     <section>
@@ -187,9 +166,10 @@ parse :: Grammar n t -> [t] -> [ParseTree n t]
                     <section>
                         <h2>
                             \[A \rightarrow BC\]
-                        </h2><br>
+                        </h2>
                         <h3>
-                            \[\mathbf{BC} = \{ C \mid B \in \mathbf{B}, C \in \mathbf{C}, A \rightarrow BC \}\]
+                            \[\mathbf{BC} = \{ P \mid B \in \mathbf{B}, C \in
+                            \mathbf{C}, A \rightarrow BC \}\]<br>
                             \[\mathbf{C}_{ik} = \bigcup_{j=i+1}^{k-1} \mathbf{C}_{ij} \mathbf{C}_{jk}\]
                         </h3>
                         <h4>
@@ -205,7 +185,7 @@ parse :: Grammar n t -> [t] -> [ParseTree n t]
                     <img src="img/better-cyk.png" alt="CYK">
                 </section>
                 <section>
-                <h2>Much better</h2>
+                <h2>Vector representation</h2>
                     <pre style="width:95%"><code>type Cell   n t = Map n [ParseTree n t]                    
 type Vector n t = [(Int, Cell n t)]
 
@@ -223,7 +203,18 @@ parse ((_, start, terminal, productions) :: Grammar n t) = process where
     product :: Cell n t -> Cell n t -> Cell n t</code></pre>
                 </section>
                 <section>
-                    <img src="img/coltrane.png" alt="CYK">
+                    <h2>Coltrane Grammar</h2>
+                    <pre style="background:#f8f8ff;font-size:.75em;">    C-coltrane-approach &rarr; Ab-cadence E-cadence
+    C-coltrane-cadence  &rarr; C-coltrane-approach C-cadence
+    C-cadence   &rarr; G-dominant  C-tonic
+    Ab-cadence  &rarr; Eb-dominant Ab-tonic
+    E-cadence   &rarr; B-dominant  E-tonic
+    G-dominant  &rarr; G7  | G7b9  | G13#11
+    B-dominant  &rarr; B7  | B7b9  | B13#11
+    Eb-dominant &rarr; Eb7 | Eb7b9 | Eb13#11
+    C-tonic     &rarr; C   | CM7   | C9
+    E-tonic     &rarr; E   | EM7   | E9
+    Ab-tonic    &rarr; Ab  | AbM7  | Ab9</pre>
                 </section>
                 <section>
                 <h2>Parse Tree</h2>
